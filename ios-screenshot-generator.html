@@ -1147,8 +1147,16 @@
 
         downloadBtn.addEventListener('click', () => {
             const size = deviceSizes[deviceSizeSelect.value];
+            const headline = headlineText.value.trim();
+            let filename;
+            if (headline) {
+                // Convert headline to filename: lowercase, spaces to underscores, remove special chars
+                filename = headline.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.png';
+            } else {
+                filename = `app-store-screenshot-${size.width}x${size.height}.png`;
+            }
             const link = document.createElement('a');
-            link.download = `app-store-screenshot-${size.width}x${size.height}.png`;
+            link.download = filename;
             link.href = previewCanvas.toDataURL('image/png');
             link.click();
         });
