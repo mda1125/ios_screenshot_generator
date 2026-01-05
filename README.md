@@ -26,3 +26,4 @@ No installation required. Works entirely offline.
 
 MIT License - see [LICENSE](LICENSE) for details.
 
+

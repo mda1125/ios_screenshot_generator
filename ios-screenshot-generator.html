@@ -282,6 +282,21 @@
         .preset-swatch.selected { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.3); }
         .gradient-presets { margin-top: 12px; }
         .bg-controls { margin-top: 8px; }
+        .button-row { display: flex; gap: 8px; margin-top: 8px; }
+        .button-row .generate-btn { flex: 1; margin-top: 0; }
+        .reset-btn {
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .reset-btn:hover { background: var(--border); color: var(--text-primary); }
     </style>
 </head>
 <body>
@@ -568,7 +583,10 @@
                     </div>
                 </div>
 
-                <button class="generate-btn" id="generateBtn" disabled>Generate Preview</button>
+                <div class="button-row">
+                    <button class="generate-btn" id="generateBtn" disabled>Generate Preview</button>
+                    <button class="reset-btn" id="resetBtn">Reset</button>
+                </div>
             </div>
 
             <div class="preview-panel">
@@ -687,6 +705,66 @@
             previewCanvas.style.display = 'none';
             emptyState.style.display = 'block';
             fileInput.value = '';
+        });
+
+        $('resetBtn').addEventListener('click', () => {
+            // Clear image
+            uploadedImage = null;
+            uploadedPreview.style.display = 'none';
+            uploadZone.style.display = 'block';
+            generateBtn.disabled = true;
+            downloadBtn.disabled = true;
+            previewCanvas.style.display = 'none';
+            emptyState.style.display = 'block';
+            fileInput.value = '';
+            
+            // Reset text fields
+            headlineText.value = '';
+            subheadingText.value = '';
+            
+            // Reset font size
+            fontSizeSlider.value = 110;
+            fontSizeValue.textContent = '110';
+            
+            // Reset device and layout
+            deviceSizeSelect.value = 'iphone-6.7';
+            layoutSelect.value = 'headline-top';
+            currentLayout = 'headline-top';
+            sizeInfo.textContent = 'Output: 1290 x 2796 pixels';
+            
+            // Reset angles
+            document.querySelectorAll('.angle-preset').forEach(b => b.classList.remove('selected'));
+            document.querySelector('.angle-preset[data-angle="flat"]').classList.add('selected');
+            currentAngles = { rotateX: 0, rotateY: 0, rotateZ: 0 };
+            customAngleControls.style.display = 'none';
+            rotateXSlider.value = 0; rotateYSlider.value = 0; rotateZSlider.value = 0;
+            $('rotateXValue').textContent = '0°';
+            $('rotateYValue').textContent = '0°';
+            $('rotateZValue').textContent = '0°';
+            
+            // Reset background to linear gradient
+            bgTypeSelect.value = 'linear';
+            currentBgType = 'linear';
+            bgSolidControls.style.display = 'none';
+            bgLinearControls.style.display = 'block';
+            bgRadialControls.style.display = 'none';
+            bgMeshControls.style.display = 'none';
+            bgPatternControls.style.display = 'none';
+            gradStart.value = '#1a3a34'; gradStartText.value = '#1A3A34';
+            gradEnd.value = '#4a8b7c'; gradEndText.value = '#4A8B7C';
+            gradAngle.value = 180; gradAngleValue.textContent = '180°';
+            
+            // Reset colors
+            bgColor.value = '#2D6B5F'; bgColorText.value = '#2D6B5F';
+            textColor.value = '#FFFFFF'; textColorText.value = '#FFFFFF';
+            frameColor.value = '#1A1A1A'; frameColorText.value = '#1A1A1A';
+            
+            // Reset checkboxes
+            showDeviceFrame.checked = true;
+            addShadow.checked = true;
+            
+            // Clear preset selection
+            document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('selected'));
         });
 
         layoutSelect.addEventListener('change', () => { currentLayout = layoutSelect.value; if (uploadedImage) generatePreview(); });
